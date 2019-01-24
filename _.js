@@ -21,7 +21,6 @@ let _ = {
     }
   }
   const checkForSwap = (val1, val2) =>{
-    //console.log('checkForSwap function '+'this is start '+ val1+' this end '+val2)
     if(val1 > val2){
       newStart = val2; newEnd = val1
       start = newStart; end = newEnd
@@ -88,11 +87,73 @@ let _ = {
         newObject[newKey] = newValue
         }
       return newObject
+    },
+//findKey function
+  findKey(object,predicate){
+    for(let key in object){
+      let value = object[key]
+      if(predicate(value)=== true){
+        return key
+      }
+      else{
+        return undefined
+      }
     }
   },
-//findKey function
-  findKey(objecy,predicate){
-
-   }
+//drop function
+  drop(arr,number){
+    if(number > 0){
+      for(let i=0; i < number; i++){
+        arr.shift()
+      }
+      return arr
+    }
+    else{
+      arr.shift()
+      return arr
+    }
+  },
+//dropWhile
+  dropWhile(arr,predicate){
+    arr.forEach((element,index) =>{
+      if(predicate(element,index,arr) === true){
+          this.drop(arr)
+        }
+      })
+    return arr
+  },
+//chunk
+  chunk(arr,size){
+    let newArr = []
+    const chunkDivider = () => {
+      let iterator = Math.floor(arr.length/size)
+      i = 0
+      while(iterator > 0){
+        let tempArr = []
+        tempArr = arr.slice(i, size)
+        newArr.push(tempArr)
+        i = size
+        size = size * 2
+        iterator -= 1
+      }
+    }
+    if(size == null){
+      let arrayString = arr.toString()
+      return arrayString.split(',');
+    }
+    else if(arr.length % size === 0){
+      chunkDivider()
+      return newArr
+    }
+    else{
+      let extraChunks = Math.floor(arr.length%size), iterator = Math.floor(arr.length/size)
+      let arrayCompleted = arr.length - extraChunks
+      chunkDivider()
+      lastPiece = this.drop(arr,arrayCompleted)
+      newArr.push(lastPiece)
+      return newArr
+    }
+  }
+}
 //// Do not write or modify code below this line.
 module.exports = _;
